@@ -2,6 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { add, subtract, multiply, getAppInfo } from '../src/math.js';
 import 'dotenv/config'; //Do we need this here? Because we are assigning mock data to process.env in the test!
 
+import request from 'supertest';
+import app from '../src/server.js';
+
+
 describe('math', () =>{
     it('adds two numbers', () =>{
         expect(add(10,20)).toBe(30);
@@ -30,3 +34,17 @@ describe('config', () => {
         });
     }
 );
+
+describe('API', () => {
+  it('GET /health returns ok', async () => {
+    const res = await request(app).get('/health');
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+  });
+
+  it('GET /add/2/3 returns 5', async () => {
+    const res = await request(app).get('/add/2/3');
+    expect(res.status).toBe(200);
+    expect(res.body.result).toBe(5);
+  });
+});
