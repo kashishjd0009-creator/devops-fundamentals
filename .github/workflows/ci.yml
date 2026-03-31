@@ -15,6 +15,13 @@ jobs:
     #This job will run on ubuntu machine
     runs-on: ubuntu-latest
 
+    #env block at the job level make these variable available to every step in the job!
+    env:
+      #"secrets" object contains all the secrets that we have defined in the repository settings. We can access them via the syntax below. secrets.SECRET_VAR inside double curly brances, prefixed by the dollar sign $.
+
+      APP_NAME: ${{secrets.APP_NAME}}
+      NODE_ENV: ${{secrets.NODE_ENV}}
+
     steps:
       #Every step carries a human friendly name, and either an action or a command to run via "uses" and "run" respectively
 
