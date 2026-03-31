@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { add, subtract } from '../src/math.js';
+import { add, subtract, multiply } from '../src/math.js';
 
 describe('math', () =>{
     it('adds two numbers', () =>{
@@ -8,5 +8,9 @@ describe('math', () =>{
 
     it('subtracts two numbers', () =>{
         expect(subtract(30,10)).toBe(20);
+    });
+
+    it('multiplies two numbers', ()=>{
+        expect(multiply(20,10)).toBe(200);
     });
 });

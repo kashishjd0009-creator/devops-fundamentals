@@ -1,0 +1,38 @@
+#Name of the workflow
+name: CI
+
+#Trigger on "PUSH" or "PR" request to main branch
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  #First job test: Run on separate runner
+  test:
+    name: Run tests
+    #This job will run on ubuntu machine
+    runs-on: ubuntu-latest
+
+    steps:
+      #Every step carries a human friendly name, and either an action or a command to run via "uses" and "run" respectively
+
+      #First step is always to checkout code via actions/checkout action. This will clone the repo in the runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      #After code is setup, we install everything that's needed to run the application. First install the NPM itself
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      #Then install the dependencies via npm ci command, which is faster and more reliable than npm install for CI environments
+      - name: Install dependencies
+        run: npm ci
+
+      #At the end we run the tests
+      - name: Run tests
+        run: npm test
