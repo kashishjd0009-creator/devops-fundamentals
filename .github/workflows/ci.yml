@@ -43,3 +43,21 @@ jobs:
       #At the end we run the tests
       - name: Run tests
         run: npm test
+
+    #Second job: Deploy
+  deploy:
+    name: Deploy to Render
+    needs: test #This job will only run if the "test" job is successful
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    #This job will only run if the event is a push(second condition) to the main branch(first condition). It only works on actualy pushes to main, not on PRs, which is what we want for deployment
+
+    steps:
+      - name: Trigger deployment
+        run: |
+          curl -s "${{ secrets.RENDER_DEPLOY_HOOK }}" \
+            -X POST \
+            -o /dev/null \
+            -w "Deploy triggered: HTTP %{http_code}\n"
+            
+          #The curl command sends a POST request to the Render deploy hook URL, which is stored as a secret in the repository settings. The -s flag makes curl silent, -X POST specifies the request method, -o /dev/null discards the response body, and -w "Deploy triggered: HTTP %{http_code}\n" prints the HTTP status code of the response for logging purposes.
