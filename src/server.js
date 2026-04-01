@@ -8,8 +8,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.get('/health', (req, res) => {
-  //res.json({ status: 'ok', ...getAppInfo() });
-  throw new Error("Something went wrong!"); 
+  res.json({ status: 'ok', ...getAppInfo() });
 });
 
 app.get('/add/:a/:b', (req, res) => {
